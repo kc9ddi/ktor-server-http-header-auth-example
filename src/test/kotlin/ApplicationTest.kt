@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 class ApplicationTest {
 
     @Test
-    fun testRoot() = testApplication {
+    fun testUnauthenticatedEndpoint() = testApplication {
         application {
             module()
         }
@@ -18,11 +18,23 @@ class ApplicationTest {
             assertEquals(HttpStatusCode.OK, status)
             assertEquals("Hello World!", bodyAsText())
         }
+    }
 
+    @Test
+    fun testAuthenticatedEndpointWithoutHeaders() = testApplication {
+        application {
+            module()
+        }
         client.get("/authenticated").apply {
             assertEquals(HttpStatusCode.Unauthorized, status)
         }
+    }
 
+    @Test
+    fun testAuthenticatedEndpointWithAppEngineHeaders() = testApplication {
+        application {
+            module()
+        }
         client.get("/authenticated") {
             headers {
                 append("X-AppEngine-QueueName", "QueueName")
