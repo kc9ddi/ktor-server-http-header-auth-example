@@ -1,0 +1,6 @@
+ktor:
+  application:
+    modules:
+      - cv.mcdonnell.ApplicationKt.module
+  deployment:
+    port: 8080
